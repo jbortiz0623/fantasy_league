@@ -1,5 +1,9 @@
-const express = require('express');
-const app = express();
+/////*****VARIABLES
+const
+    express = require('express'),
+    app = express(),
+    bodyParser = require('body-parser'),
+    db = require('./models');
 
 //serve static files in public
 app.use(express.static('public'));
