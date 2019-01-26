@@ -1,8 +1,13 @@
 const express = require('express');
 const app = express();
 
-// MIDDLEWARE
+//serve static files in public
 app.use(express.static('public'));
+
+// MIDDLEWARE
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 // ROUTES
 // stay tuned
