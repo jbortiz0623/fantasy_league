@@ -16,7 +16,7 @@ class CreateTeam extends Component {
     this.onChangeTName = this.onChangeTName.bind(this);
     this.onChangeplayers = this.onChangeplayers.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.onAdd = this.onAdd.bind(this)
+    // this.onAdd = this.onAdd.bind(this)
     }
 componentDidMount() {
     var ths = this;
