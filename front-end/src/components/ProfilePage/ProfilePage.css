@@ -1,0 +1,9 @@
+col {
+    border-style: solid 2px green;
+}
+
+.body {
+    background-color: aliceblue;
+    display: flex;
+
+}

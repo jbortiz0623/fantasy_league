@@ -1,0 +1,45 @@
+.nav {
+    background-color: black;
+    height: 75px;
+    display: flex;
+    flex-direction: row;
+}
+
+.brand-logo {
+    margin-top: 7.5px;
+    margin-left: 5%;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 400;
+    transform: skew(-3deg);
+}
+
+.nav-wrapper {
+    width: 100%;
+}
+
+ul {
+    list-style: none;
+    height: 95%;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    justify-content: space-between;
+    margin-top: 1%;
+}
+
+a:hover {
+    text-decoration: underline;
+    text-decoration-color: gold;
+}
+
+.navButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.modal-content {
+    color: black;
+}
