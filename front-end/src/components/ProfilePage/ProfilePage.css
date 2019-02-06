@@ -7,3 +7,8 @@ col {
     display: flex;
 
 }
+
+.teams {
+    width: 100%;
+    border-bottom: solid 2px black;
+}

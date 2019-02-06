@@ -4,57 +4,94 @@ import EditProfile from '../EditProfile/EditProfile'
 import ProfileDetails from '../ProfileDetails/ProfileDetails'
 import CreateTeam from '../CreateTeam/CreateTeam'
 import './ProfilePage.css'
+import axios from 'axios';
 
 
 class ProfilePage extends Component {
-//  constructor(props) {
-//     super(props);
+ constructor(props) {
+    super(props);
 
-//     this.state = {
-//       teams: JSON.parse(localStorage.getItem('teams'))
-// };
-//   // this.onAdd = this.onAdd.bind(this);
-// }
-//   componentWillMount() {
-//     const teams = this.getTeams();
+    this.state = {
+      username:'',
+      email:'',
+      name:'',
+      teams: []
+
+    }     
+};
+
+  fetchTeams = () => {
+    
+    let userid = localStorage.userId
+    console.log(userid);
+    console.log('fetching')
+    axios.get(`http://localhost:3001/users/${userid}/teams`)
+    .then((res)=>{
+      this.setState({
+        teams: res.data,
+      })
+    })
+}
+
+  componentDidMount() {
+    console.log('in componentdidmount')
+      this.fetchTeams();
+      // axios.get(`http://localhost:3001/users/create/teams`)
+      // .then((res)=> {
+      //   console.log(res.data)
+      //   // this.setState({
+      //   //   teams: res.data
+      //   // })
+      // })
+    }
+  // deleteTeam = (e) => {
+  //   e.preventDefault();
+  //   let team_id = e.target.team_id
+  //   axios.delete(`http://localhost:3001/teams/${team_id}`)
+  //   .then((res) => { console.log("Team deleted");
+  //     this.setState({ deleteTeam: res.data.team_id })
+  //   })
+  // }
   
-//     this.setState({ teams }); 
-// }
-// getTeams() {
-//   return this.state.teams;
-// }
-// onAdd(selectedPlyaer, TName) {
-//   const teams = this.getTeams();
-//   teams.push({
-//     selectedPlyaer,
-//     TName
-//   })
-//   this.setState({ teams })
-// }
+
     render () {
       let editButton = []
       if (this.props.isLoggedIn) {
         editButton.push(
-          <Modal header='Edit Profile' trigger={<a href="/"className="formButtons">Edit Info</a>}>
+          <Modal header='Edit Profile' trigger={<button href="/"className="formButtons">Edit Info</button>}>
             <EditProfile />
           </Modal>)
       }
+        console.log(this.state.teams);
+        let teams = this.state.teams.map((team) => {
+        let players = team.players.map((player) => {
+          return(<p>{player.Name}</p>)
+        })
+        return(
+          <div>
+            <p>team</p>
+            <h1>{team.TName}</h1>
+            {players}
+            <button onClick={this.deleteTeam} value={team._id} >Destroy </button>
+          </div>
+        )
+      })
       return (
           <div className="profile-page-main">
             <section className="user-info-tab">
               <div>
-                <ProfileDetails Name={this.props.Name} Username={this.props.Username} Email={this.props.Email} />
+                <ProfileDetails Name={this.state.name} Username={this.state.username} Email={this.state.email} />
               </div>
             </section>
             <section className="dividing-line" />
             <section className="user-team-container">
                 <div>
                 <Modal header='Create Team' trigger={<button href="/"className="formButtons">Create A Dream Team</button>}>
-            <CreateTeam />
+            <CreateTeam fetchTeams={this.fetchTeams}/>
                 </Modal>
-                {/* onAdd={this.onAdd} */}
               </div>
               <hr />
+              {teams} 
 
             </section>
           </div>

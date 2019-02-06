@@ -10,7 +10,7 @@ class NavBar extends Component {
     let navBarItems = [<NavItem key={1} href='/'></NavItem>]
     if (this.props.isLoggedIn) {
       navBarItems.push(
-        <NavItem key={2} href='/FantasyBattle'>Fantasy Battle</NavItem>)
+        <NavItem key={2} href='/Players'>Players</NavItem>)
         navBarItems.push(
           <NavItem key={3} href='/ProfilePage'>Profile</NavItem>)
       navBarItems.push(

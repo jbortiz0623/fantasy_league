@@ -16,7 +16,6 @@ class CreateTeam extends Component {
     this.onChangeTName = this.onChangeTName.bind(this);
     this.onChangeplayers = this.onChangeplayers.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    // this.onAdd = this.onAdd.bind(this)
     }
 componentDidMount() {
     var ths = this;
@@ -25,7 +24,7 @@ componentDidMount() {
         ths.setState({
             playersl:res
         })
-        
+ 
         console.log(res)
     }) 
 }
@@ -42,27 +41,41 @@ onChangeplayers(e) {
       players: e.target.value
       
     })  
-    var j = false;
-    document.getElementById('playerlists').childNodes.forEach(function(el){
-        if(j===false){
+    // var j = false;
+    // document.getElementById('playerlists').childNodes.forEach(function(el){
+    //     if(j===false){
            
-            if(el.lastChild.textContent.startsWith(e.target.value)){
-                // var rx new RegExp('')
-                // console.log(el.lastChild.textContent.scrollTop)
-                console.log(el.lastChild.offsetTop);
-                document.getElementById('playerlists').scrollTop = el.lastChild.offsetTop
-                j=true;
-            }
+    //         if(el.lastChild.textContent.startsWith(e.target.value)){
+    //             // var rx new RegExp('')
+    //             // console.log(el.lastChild.textContent.scrollTop)
+    //             console.log(el.lastChild.offsetTop);
+    //             document.getElementById('playerlists').scrollTop = el.lastChild.offsetTop
+    //             j=true;
+    //         }
             
-        }
+    //     }
         
-    });
+    // });
+    // if (this.state.players == ''){
+    //     this.setState({
+    //         playersl: 
+    //     })
+    // }
+    let filtered = this.state.playersl.data.filter((player)=>{
+        if(player.Name){
+            // console.log(player.Name)
+            console.log(this.state.players)
+        return player.Name.includes(this.state.players)
+        } 
+    })
+    this.setState({
+        playersfiltered: {data:filtered}
+    })
   }
 
 onSubmit(e) {
     
     e.preventDefault();
-    this.props.onAdd(this.selectedPlyaer.value , this.TName.value); 
     console.log(this.state.TName)
     const obj = {
       TName: this.state.TName,
@@ -71,11 +84,13 @@ onSubmit(e) {
     };
     axios.post(`http://localhost:3001/team/create`, obj)
         .then(res => console.log(res.data));
-    
+
     this.setState({
       TName: '',
     //   players: ''
     })
+
+    this.props.fetchTeams();
   }
   slelectTeam=(e)=>{
     if(e.target.checked){
@@ -84,10 +99,21 @@ onSubmit(e) {
   }
     render() {
         var ele ='';
-        if(this.state.playersl!=null){
+        if(this.state.playersfiltered!=null){
+            var data = this.state.playersfiltered.data
+            var ths = this;
+            ele = data.map((el) => {
+                if(ths.state.selectedPlyaer.includes(el._id)){
+                    return (<Input name='players[]' key={el._id} onChange={ths.slelectTeam} checked type='checkbox' value={el._id} label={el.Name} />);
+                }else{
+                    return (<Input name='players[]' key={el._id} onChange={ths.slelectTeam} type='checkbox' value={el._id} label={el.Name} />);
+                }
+               
+            })
+        } else if (this.state.playersl!=null){
             var data = this.state.playersl.data
             var ths = this;
-            ele = data.map(function(el){
+            ele = data.map((el) => {
                 if(ths.state.selectedPlyaer.includes(el._id)){
                     return (<Input name='players[]' key={el._id} onChange={ths.slelectTeam} checked type='checkbox' value={el._id} label={el.Name} />);
                 }else{
@@ -98,7 +124,7 @@ onSubmit(e) {
             
             // for(var i = 0; i<data.length; i++) {
             //     ele.push()
-            //     // ele+=`<option data-value="${data[i]._id}" value="${data[i].Name}" />`
+            //     ele+=`<option data-value="${data[i]._id}" value="${data[i].Name}" />`
             // }
         
         }
@@ -113,7 +139,7 @@ onSubmit(e) {
                       className="form-control" 
                       value={this.state.TName}
                       onChange={this.onChangeTName}
-                    ref={TName => this.TName = TName}
+                      ref={TName => this.TName = TName}
                     />
                 </div>
                 <div className="form-group">

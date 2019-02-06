@@ -11,6 +11,7 @@ router.get('/', (req,res) => {
 
 router.get('/:id', (req,res) => {
     db.Team.findOne({_id:req.params.id})
+    .populate('players')
         .exec((err,found) => res.json(found))
 })
 

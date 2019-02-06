@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import {  Route,  Switch, withRouter  } from 'react-router-dom';
 import NavBar from '../NavBar/NavBar';
 // import Slider from "../Carousel/Carousel";
-import ProfilePage from '../ProfilePage/ProfilePage'
+import ProfilePage from '../ProfilePage/ProfilePage';
 import axios from 'axios';
 import './App.css';
-
+import Players from '../Players/Players'
 class App extends Component {
   constructor () {
     super()
@@ -15,6 +15,7 @@ class App extends Component {
       password: '',
       name: '',
       username: '',
+      userid: null,
       isLoggedIn: false
     }
 
@@ -23,7 +24,7 @@ class App extends Component {
     this.handleLogIn = this.handleLogIn.bind(this)
     this.handleSignUp = this.handleSignUp.bind(this)
   }
-
+  
   componentDidMount () {
     if (localStorage.token) {
       this.setState({
@@ -70,7 +71,7 @@ class App extends Component {
             isLoggedIn: true
           })
       })
-      .catch(err => {console.log(err);console.log(err.response)})
+      .catch(err => {console.log(err)});
   }
 
   handleLogIn = (e) => {
@@ -80,7 +81,8 @@ class App extends Component {
       password: this.state.password,
     })
     .then( response => {
-      localStorage.token = response.data.token
+      localStorage.token = response.data.token;
+      localStorage.userId = response.data.user._id;
       console.log(response.data)
       this.setState({
             name: response.data.name,
@@ -98,11 +100,11 @@ class App extends Component {
         <NavBar isLoggedIn={this.state.isLoggedIn} handleInput={this.handleInput} handleLogIn={this.handleLogIn} handleSignUp={this.handleSignUp} handleLogOut={this.handleLogOut}/>
         <div className='body'>
           <Switch>
-            <Route path='/fantasybattlepage'
+            <Route path='/players'
               render={() => {
                 return (
                   <>
-                  {/* <FantasyBattlePage isLoggedIn={this.state.isLoggedIn} /> */}
+                  <Players isLoggedIn={this.state.isLoggedIn} />
                   </>
                 )
               }}
